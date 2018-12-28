@@ -1,0 +1,7 @@
+.has-background-danger {
+    background: hsl(348, 100%, 71%) !important;
+}
+
+td.omitted {
+    background-color: white;
+}

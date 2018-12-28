@@ -1,0 +1,8 @@
+[api]
+url = https://XXXXXXXX:5665/
+username = XXXXXXx
+password = XXXXXXXXx
+
+;certificate = /etc/ssl/certs/myhostname.crt
+;key = /etc/ssl/private/myhostname.key
+;ca_certificate = /etc/ssl/certs/ca.crt
