@@ -7,7 +7,7 @@ from helpers import State, StateCssClass
 from models import MonitoringStatus
 from icinga2api.client import Client as Icinga2Client
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/naglite4/static', static_folder='static')
 humanize = Humanize(app)
 icinga2api = Icinga2Client(config_file='icinga2-api.ini')
 
