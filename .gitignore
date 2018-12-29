@@ -1,1 +1,5 @@
 icinga2-api.ini
+
+# We do not use requirements.txt
+# Use `pipenv  lock --requirements > requirements.txt` to generate it
+requirements.txt
