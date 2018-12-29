@@ -8,8 +8,11 @@ Python3.6+, Icinga2API, Flask, humanize.
 
 ## How to start
 
-Create `icinga2-api.ini` from provided example. Do provide CA certificate
-to silence certs.
+Create `icinga2-api.ini` from provided example. 
+
+To silence warning on certificates, provide CA certificate 
+to INI file.  The certificate can be found on Icinga2 host
+at `/var/lib/icinga2/ca/ca.crt`.
 
 ### Start in debug mode 
 
@@ -21,6 +24,6 @@ Use `gunicorn` to start WSGI object `main:app`
 
 ## License
 
-BSD-2   
+2 clause BSD
 
 [Naglite3]: https://github.com/saz/Naglite3
