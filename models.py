@@ -17,19 +17,35 @@ class MonitoringStatus:
         self.apiclient = apiclient
         self._hosts_cache = None
         self._services_cache = None
+        self._host_counts = Counter()
+        self._service_counts = Counter()
 
     def _hosts(self):
         # TODO: this should probably use some thread lock and/or cache.
         if self._hosts_cache is not None:
             return self._hosts_cache
 
+        host_counts = self._host_counts
         hosts = {}
         for obj in self.apiclient.objects.list('Host'):
             k = obj['attrs']['__name']
             hosts[k] = Host(obj)
+            
+            if obj['attrs']['state'] == 0:
+                host_counts['ok'] += 1
+            elif obj['attrs']['downtime_depth']:
+                host_counts['downtime'] += 1
+            elif not obj['attrs']['last_reachable']:
+                host_counts['unreachable'] += 1
+            elif obj['attrs']['last_state_type'] != 0:
+                host_counts['critical'] += 1
 
         self._hosts_cache = OrderedDict(sorted(hosts.items()))
+
         return self._hosts_cache
+
+    def host_counts(self):
+        return self._host_counts
 
     def _services(self):
         # TODO: this should probably use some thread lock and/or cache.
