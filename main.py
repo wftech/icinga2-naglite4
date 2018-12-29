@@ -1,4 +1,5 @@
 import os
+import datetime
 
 from flask import Flask, render_template
 from flask_humanize import Humanize
@@ -35,7 +36,7 @@ def status_css_class_filter(value):
 def view_index():
     context = dict(
         monitoring=MonitoringStatus(apiclient=icinga2api),
-        current_time = 'now'
+        current_time=datetime.datetime.now().isoformat(sep=' ', timespec='seconds')
     )
     body = render_template('index.html', **context)
     headers = dict(
