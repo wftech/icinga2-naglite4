@@ -7,7 +7,6 @@ verify_ssl = true
 
 [packages]
 icinga2api = {editable = true,git = "https://github.com/wftech/python-icinga2api.git",ref = "f47b8e"}
-redis = "*"
 flask = "*"
 humanize = "*"
 flask-humanize = "*"
