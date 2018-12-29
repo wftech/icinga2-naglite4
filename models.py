@@ -1,6 +1,6 @@
 import json
 import datetime
-from collections import OrderedDict
+from collections import OrderedDict, Counter
 from pprint import pprint
 
 from redis import StrictRedis
@@ -16,9 +16,9 @@ class MonitoringStatus:
 
         self.apiclient = apiclient
         self._hosts_cache = None
+        self._services_cache = None
 
     def _hosts(self):
-
         # TODO: this should probably use some thread lock and/or cache.
         if self._hosts_cache is not None:
             return self._hosts_cache
@@ -30,6 +30,22 @@ class MonitoringStatus:
 
         self._hosts_cache = OrderedDict(sorted(hosts.items()))
         return self._hosts_cache
+
+    def _services(self):
+        # TODO: this should probably use some thread lock and/or cache.
+        if self._services_cache is not None:
+            return self._services_cache
+
+        services = {}
+        filters = 'service.state!=ServiceOK'
+
+        for obj in self.apiclient.objects.list(
+                'Service', filters='service.state!=ServiceOK'):
+            k = obj['attrs']['__name']
+            services[k] = Service(obj)
+
+        self._services_cache = OrderedDict(sorted(services.items()))
+        return self._services_cache
 
     def all_hosts(self):
         return self._hosts().values()
@@ -45,17 +61,13 @@ class MonitoringStatus:
 
     @property
     def problem_services(self, acknowledged=None):
-        api = self.apiclient
-        filters = 'service.state!=ServiceOK'
-        retv = {}
-        for obj in api.objects.list('Service', filters=filters):
+        for obj in self._services().values():
+            if int(obj['state']) == 0:  # OK
+                continue
             if acknowledged is not None:
-                if int(obj['attrs']['acknowledgement']) != int(acknowledged):
+                if int(obj['acknowledgement']) != int(acknowledged):
                     continue
-            n = obj['attrs']['__name']
-            retv[n] = Service(obj)
-        for k, v in sorted(retv.items()):
-            yield v
+            yield obj
 
 
 class Status:
@@ -74,11 +86,15 @@ class Status:
 
     @property
     def check_attempts(self):
-        return int(self._data['attrs']['check_attempt'])
+        return int(self['check_attempt'])
 
     @property
     def max_check_attempts(self):
-        return int(self._data['attrs']['max_check_attempts'])
+        return int(self['max_check_attempts'])
+
+    @property
+    def is_soft_state(self):
+        return self['check_attempts'] != self['max_check_attempts']
 
     @property
     def duration(self):
