@@ -12,7 +12,7 @@ humanize = Humanize(app)
 icinga2api = Icinga2Client(config_file='icinga2-api.ini')
 
 CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))
-REFRESH = 15
+REFRESH = os.getenv('REFRESH', 15)
 
 
 @app.template_filter('icinga_status')
@@ -31,19 +31,18 @@ def status_css_class_filter(value):
         return ''
 
 
-
 @app.route('/')
 def view_index():
     context = dict(
-        refresh=30,
         monitoring=MonitoringStatus(apiclient=icinga2api),
         current_time = 'now'
     )
     body = render_template('index.html', **context)
     headers = dict(
-        Refresh='30'
+        Refresh='{}'.format(REFRESH)
     )
     return (body, 200, headers)
+
 
 if __name__ == '__main__':
     import sys
