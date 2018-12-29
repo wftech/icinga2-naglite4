@@ -37,7 +37,7 @@ class MonitoringStatus:
             elif not obj['attrs']['last_reachable']:
                 host_counts['unreachable'] += 1
             elif obj['attrs']['last_state_type'] != 0:
-                host_counts['critical'] += 1
+                host_counts['down'] += 1
 
         self._hosts_cache = OrderedDict(sorted(hosts.items()))
 
@@ -58,13 +58,37 @@ class MonitoringStatus:
         services = {}
         filters = 'service.state!=ServiceOK'
 
+        valid_services = self.apiclient.objects.list(
+            'Service', filters='service.state==ServiceOK',
+            attrs=['name'])
+        services_counts = self._service_counts
+        services_counts['ok'] = len(valid_services)
+
+
         for obj in self.apiclient.objects.list(
                 'Service', filters='service.state!=ServiceOK'):
             k = obj['attrs']['__name']
             services[k] = Service(obj)
 
+            if obj['attrs']['downtime_depth']:
+                services_counts['downtime'] += 1
+            elif obj['attrs']['acknowledgement']:
+                services_counts['acknowledged'] += 1
+            elif not obj['attrs']['last_reachable']:
+                services_counts['unreachable'] += 1
+            elif obj['attrs']['last_state_type'] != 0:
+                services_counts['critical'] += 1
+
         self._services_cache = OrderedDict(sorted(services.items()))
         return self._services_cache
+
+
+    def service_count(self, status):
+        if self._services_cache is None:
+            self._services()
+        if not self._service_counts[status]:
+            return None
+        return self._service_counts[status]
 
     def all_hosts(self):
         return self._hosts().values()

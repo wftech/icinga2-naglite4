@@ -4,18 +4,37 @@
 
 {% macro hostcount(name, title, a_color="green") %}
 {% if monitoring.host_count(name) %}
-<td style="background-color: {{ a_color }};">{{ monitoring.host_count(name) }} {{ name }}</td>
+<td style="background-color: {{ a_color }};">{{ monitoring.host_count(name) }} {{ title }}</td>
 {% endif %}{% endmacro %}
+
+{% macro svccount(name, title, a_color="green") %}
+{% if monitoring.service_count(name) %}
+<td style="background-color: {{ a_color }};">{{ monitoring.service_count(name) }} {{ title }}</td>
+{% endif %}{% endmacro %}
+
 
 <table>
     <tr>
-        {{  hostcount("ok", "OK" ) }}
-        {{  hostcount("critical", "Acknowledged", "red" ) }}
+        <th>Hosts:</th>
+        {{  hostcount("ok", "Up" ) }}
+        {{  hostcount("down", "Down", "red" ) }}
         {{  hostcount("downtime", "Scheduled Down", "gray" ) }}
         {{  hostcount("acknowledged", "Acknowledged", "yellow" ) }}
         {{  hostcount("unreachable", "Unreachable", "gray" ) }}
     </tr>
 </table>
+
+<table>
+    <tr>
+        <th>Services:</th>
+        {{  svccount("ok", "OK" ) }}
+        {{  svccount("critical", "Critical", "red" ) }}
+        {{  svccount("downtime", "Scheduled Down", "gray" ) }}
+        {{  svccount("acknowledged", "Acknowledged", "yellow" ) }}
+        {{  svccount("unreachable", "Unreachable", "gray" ) }}
+    </tr>
+</table>
+
 
 <h2>Hosts</h2>
 
@@ -43,6 +62,9 @@
     {% endfor %}
     </tbody>
 </table>
+
+{# TODO: show short list acknowledged hosts here #}
+
 
 <hr>
 
