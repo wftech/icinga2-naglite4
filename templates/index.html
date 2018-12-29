@@ -1,7 +1,23 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Problem hosts</h2>
+
+{% macro hostcount(name, title, a_color="green") %}
+{% if monitoring.host_count(name) %}
+<td style="background-color: {{ a_color }};">{{ monitoring.host_count(name) }} {{ name }}</td>
+{% endif %}{% endmacro %}
+
+<table>
+    <tr>
+        {{  hostcount("ok", "OK" ) }}
+        {{  hostcount("critical", "Acknowledged", "red" ) }}
+        {{  hostcount("downtime", "Scheduled Down", "gray" ) }}
+        {{  hostcount("acknowledged", "Acknowledged", "yellow" ) }}
+        {{  hostcount("unreachable", "Unreachable", "gray" ) }}
+    </tr>
+</table>
+
+<h2>Hosts</h2>
 
 <table class="table is-bordered is-striped is-narrow is-fullwidth">
     <thead>

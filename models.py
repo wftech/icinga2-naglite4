@@ -3,13 +3,11 @@ import datetime
 from collections import OrderedDict, Counter
 from pprint import pprint
 
-from redis import StrictRedis
-
 
 class MonitoringStatus:
     def __init__(self, apiclient):
         """
-        This objects Representing monitoring status.
+        This objects represents current status of monitoring system.
 
         :param apiclient: Provide Icinga2API client
         """
@@ -30,11 +28,12 @@ class MonitoringStatus:
         for obj in self.apiclient.objects.list('Host'):
             k = obj['attrs']['__name']
             hosts[k] = Host(obj)
-            
             if obj['attrs']['state'] == 0:
                 host_counts['ok'] += 1
             elif obj['attrs']['downtime_depth']:
                 host_counts['downtime'] += 1
+            elif obj['attrs']['acknowledgement']:
+                host_counts['acknowledged'] += 1
             elif not obj['attrs']['last_reachable']:
                 host_counts['unreachable'] += 1
             elif obj['attrs']['last_state_type'] != 0:
@@ -44,8 +43,12 @@ class MonitoringStatus:
 
         return self._hosts_cache
 
-    def host_counts(self):
-        return self._host_counts
+    def host_count(self, status):
+        if self._hosts_cache is None:
+            self._hosts()
+        if not self._host_counts[status]:
+            return None
+        return self._host_counts[status]
 
     def _services(self):
         # TODO: this should probably use some thread lock and/or cache.
