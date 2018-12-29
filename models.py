@@ -25,7 +25,12 @@ class MonitoringStatus:
 
         host_counts = self._host_counts
         hosts = {}
-        for obj in self.apiclient.objects.list('Host'):
+        attrs = ['state', 'downtime_depth', 'acknowledgement',
+                 'last_reachable', 'last_state_type', 'last_state_change',
+                 'last_check_result',
+                 'check_attempt', 'max_check_attempts',
+                 'address', 'name', '__name']
+        for obj in self.apiclient.objects.list('Host', attrs=attrs):
             k = obj['attrs']['__name']
             hosts[k] = Host(obj)
             if obj['attrs']['state'] == 0:
@@ -56,17 +61,21 @@ class MonitoringStatus:
             return self._services_cache
 
         services = {}
-        filters = 'service.state!=ServiceOK'
-
         valid_services = self.apiclient.objects.list(
             'Service', filters='service.state==ServiceOK',
             attrs=['name'])
         services_counts = self._service_counts
         services_counts['ok'] = len(valid_services)
 
-
+        attrs = ['state', 'downtime_depth', 'acknowledgement',
+                 'last_reachable', 'last_state_type', 'last_state_change',
+                 'last_check_result',
+                 'check_attempt', 'max_check_attempts',
+                 'name', 'host_name', '__name']
         for obj in self.apiclient.objects.list(
-                'Service', filters='service.state!=ServiceOK'):
+                'Service',
+                filters='service.state!=ServiceOK',
+                attrs=attrs):
             k = obj['attrs']['__name']
             services[k] = Service(obj)
 
@@ -121,11 +130,11 @@ class Status:
 
     @property
     def host_name(self):
-        return self._data['attrs']['host_name']
+        return self['host_name']
 
     @property
     def check_result(self):
-        return self._data['attrs']['last_check_result']
+        return self['last_check_result']
 
     @property
     def check_attempts(self):
@@ -141,7 +150,7 @@ class Status:
 
     @property
     def duration(self):
-        ts = float(self._data['attrs']['last_state_change'])
+        ts = float(self['last_state_change'])
         event_time = datetime.datetime.fromtimestamp(ts)
         duration = datetime.datetime.now() - event_time
         return duration
