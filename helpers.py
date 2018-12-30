@@ -8,6 +8,13 @@ class State(Enum):
     UNKNOWN = 3
 
 
+class StatePriority(Enum):
+    OK = 4
+    WARNING = 2
+    CRITICAL = 1
+    UNKNOWN = 3
+
+
 class StateCssClass(Enum):
     OK = 'has-background-success'
     WARNING = 'has-background-warning'

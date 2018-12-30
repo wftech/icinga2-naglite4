@@ -1,7 +1,7 @@
-import json
 import datetime
 from collections import OrderedDict, Counter
-from pprint import pprint
+
+from helpers import State, StatePriority
 
 
 class MonitoringStatus:
@@ -60,7 +60,7 @@ class MonitoringStatus:
         if self._services_cache is not None:
             return self._services_cache
 
-        services = {}
+        nested_services = {}
         valid_services = self.apiclient.objects.list(
             'Service', filters='service.state==ServiceOK',
             attrs=['name'])
@@ -77,7 +77,13 @@ class MonitoringStatus:
                 filters='service.state!=ServiceOK',
                 attrs=attrs):
             k = obj['attrs']['__name']
-            services[k] = Service(obj)
+            service = Service(obj)
+            host = service.host_name
+            if host not in nested_services.keys():
+                nested_services[host] = dict(items=[], state_priority=StatePriority.OK.value)
+            nested_services[host]['items'].append(service)
+            nested_services[host]['state_priority'] = min(nested_services[host]['state_priority'],
+                                                          service.state_priority)
 
             if obj['attrs']['downtime_depth']:
                 services_counts['downtime'] += 1
@@ -88,9 +94,16 @@ class MonitoringStatus:
             elif obj['attrs']['last_state_type'] != 0:
                 services_counts['critical'] += 1
 
-        self._services_cache = OrderedDict(sorted(services.items()))
-        return self._services_cache
+        nested_services = OrderedDict(
+            sorted(nested_services.items(), key=lambda item: item[1]['state_priority']))
 
+        services = {}
+        for _, host_services in nested_services.items():
+            for s in sorted(host_services['items'], key=lambda item: item.state_priority):
+                services[s.service_key] = s
+
+        self._services_cache = OrderedDict(services.items())
+        return self._services_cache
 
     def service_count(self, status):
         if self._services_cache is None:
@@ -104,7 +117,7 @@ class MonitoringStatus:
 
     def problem_hosts(self, acknowledged=None):
         for obj in self._hosts().values():
-            if int(obj['state']) == 0:  # OK
+            if int(obj['state']) == State.OK.value:
                 continue
             if acknowledged is not None:
                 if int(obj['acknowledgement']) != int(acknowledged):
@@ -114,7 +127,7 @@ class MonitoringStatus:
     @property
     def problem_services(self, acknowledged=None):
         for obj in self._services().values():
-            if int(obj['state']) == 0:  # OK
+            if int(obj['state']) == State.OK.value:
                 continue
             if acknowledged is not None:
                 if int(obj['acknowledgement']) != int(acknowledged):
@@ -155,6 +168,10 @@ class Status:
         duration = datetime.datetime.now() - event_time
         return duration
 
+    @property
+    def state_priority(self):
+        return getattr(StatePriority, State(int(self['state'])).name).value
+
     def __getitem__(self, item):
         return self._data['attrs'][item]
 
@@ -163,8 +180,6 @@ class Host(Status):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         assert self._data['type'] == 'Host', self._data
-
-    #        pprint(self._data)
 
     @property
     def host_name(self):
@@ -180,8 +195,10 @@ class Service(Status):
         super().__init__(*args, **kwargs)
         assert self._data['type'] == 'Service', self._data
 
-    #        pprint(self._data)
-
     @property
     def service_name(self):
         return self._data['attrs']['name']
+
+    @property
+    def service_key(self):
+        return self._data['attrs']['__name']
