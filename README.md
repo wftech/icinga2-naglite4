@@ -24,6 +24,6 @@ Use `gunicorn` to start WSGI object `main:app`
 
 ## License
 
-2 clause BSD
+APACHE 2
 
 [Naglite3]: https://github.com/saz/Naglite3
