@@ -2,6 +2,8 @@
 
 This is [Naglite3] rewrite for Icinga2 using Icinga2 API. 
 
+![Screenshot](https://github.com/wftech/icinga2-naglite4/blob/master/docs/naglite4.png)
+
 ## Requirements
 
 Python3.6+, Icinga2API, Flask, humanize.
