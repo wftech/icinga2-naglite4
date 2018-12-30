@@ -17,6 +17,8 @@ class MonitoringStatus:
         self._services_cache = None
         self._host_counts = Counter()
         self._service_counts = Counter()
+        self.problem_hosts_count = 0
+        self.problem_services_count = 0
 
     def _hosts(self):
         # TODO: this should probably use some thread lock and/or cache.
@@ -43,6 +45,9 @@ class MonitoringStatus:
                 host_counts['unreachable'] += 1
             elif obj['attrs']['last_state_type'] != 0:
                 host_counts['down'] += 1
+
+            if int(obj['attrs']['state']) != State.OK.value:
+                self.problem_hosts_count += 1
 
         self._hosts_cache = OrderedDict(sorted(hosts.items()))
 
@@ -93,6 +98,9 @@ class MonitoringStatus:
                 services_counts['unreachable'] += 1
             elif obj['attrs']['last_state_type'] != 0:
                 services_counts['critical'] += 1
+
+            if int(obj['attrs']['state']) != State.OK.value:
+                self.problem_services_count += 1
 
         nested_services = OrderedDict(
             sorted(nested_services.items(), key=lambda item: item[1]['state_priority']))

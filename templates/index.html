@@ -29,42 +29,47 @@
         </tr>
     </table>
 
-    <table class="state">
-        <thead>
-        <tr>
-            <th>Host</th>
-            <th>IP Address</th>
-            <th>Status</th>
-            <th>Duration</th>
-            <th>Attempts</th>
-            <th>Plugin output</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for item in monitoring.problem_hosts(acknowledged=0) %}
+    {% if monitoring.problem_hosts_count > 0 %}
+        <table class="state">
+            <thead>
             <tr>
-                <td class="info">
-                    {{ item.host_name }}
-                </td>
-                <td class="info">
-                    {{ item.host_address }}
-                </td>
-                <td class="{{ item.check_result.state|icinga_status_css_class }}">
-                    {{ item.check_result.state|icinga_status }}
-                </td>
-                <td class="{{ item.check_result.state|icinga_status_css_class }}">
-                    {{ item.duration|humanize() }}
-                </td>
-                <td class="{{ item.check_result.state|icinga_status_css_class }}">
-                    {{ item.check_attempts }}/{{ item.max_check_attempts }}
-                </td>
-                <td class="{{ item.check_result.state|icinga_status_css_class }} ws-break">
-                    {{ item.check_result.output }}
-                </td>
+                <th>Host</th>
+                <th>IP Address</th>
+                <th>Status</th>
+                <th>Duration</th>
+                <th>Attempts</th>
+                <th>Plugin output</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for item in monitoring.problem_hosts(acknowledged=0) %}
+                <tr>
+                    <td class="info">
+                        {{ item.host_name }}
+                    </td>
+                    <td class="info">
+                        {{ item.host_address }}
+                    </td>
+                    <td class="{{ item.check_result.state|icinga_status_css_class }}">
+                        {{ item.check_result.state|icinga_status }}
+                    </td>
+                    <td class="{{ item.check_result.state|icinga_status_css_class }}">
+                        {{ item.duration|humanize() }}
+                    </td>
+                    <td class="{{ item.check_result.state|icinga_status_css_class }}">
+                        {{ item.check_attempts }}/{{ item.max_check_attempts }}
+                    </td>
+                    <td class="{{ item.check_result.state|icinga_status_css_class }} ws-break">
+                        {{ item.check_result.output }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <br class="clear">
+        <p class="success">All monitored hosts up</p>
+    {% endif %}
 
     {# TODO: show short list acknowledged hosts here #}
 
@@ -80,46 +85,51 @@
         </tr>
     </table>
 
-    <table class="state">
-        <thead>
-        <tr>
-            <th>Host</th>
-            <th>Service</th>
-            <th>Status</th>
-            <th>Duration</th>
-            <th>Attempts</th>
-            <th>Plugin output</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for item in monitoring.problem_services %}
+    {% if monitoring.problem_services_count > 0 %}
+        <table class="state">
+            <thead>
             <tr>
-                {% if loop.changed(item.host_name) %}
-                    <td class="info">
-                        {{ item.host_name }}
-                    </td>
-                {% else %}
-                    <td class="info-empty"></td>
-                {% endif %}
-                <td class="{{ item.check_result.state|icinga_status_css_class }}">
-                    {{ item.service_name }}
-                </td>
-                <td class="{{ item.check_result.state|icinga_status_css_class }}">
-                    {{ item.check_result.state|icinga_status }}
-                </td>
-                <td class="{{ item.check_result.state|icinga_status_css_class }}">
-                    {{ item.duration|humanize() }}
-                </td>
-                <td class="{{ item.check_result.state|icinga_status_css_class }}">
-                    {{ item.check_attempts }}/{{ item.max_check_attempts }}
-                </td>
-                <td class="{{ item.check_result.state|icinga_status_css_class }} ws-break">
-                    {{ item.check_result.output }}
-                </td>
+                <th>Host</th>
+                <th>Service</th>
+                <th>Status</th>
+                <th>Duration</th>
+                <th>Attempts</th>
+                <th>Plugin output</th>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for item in monitoring.problem_services %}
+                <tr>
+                    {% if loop.changed(item.host_name) %}
+                        <td class="info">
+                            {{ item.host_name }}
+                        </td>
+                    {% else %}
+                        <td class="info-empty"></td>
+                    {% endif %}
+                    <td class="{{ item.check_result.state|icinga_status_css_class }}">
+                        {{ item.service_name }}
+                    </td>
+                    <td class="{{ item.check_result.state|icinga_status_css_class }}">
+                        {{ item.check_result.state|icinga_status }}
+                    </td>
+                    <td class="{{ item.check_result.state|icinga_status_css_class }}">
+                        {{ item.duration|humanize() }}
+                    </td>
+                    <td class="{{ item.check_result.state|icinga_status_css_class }}">
+                        {{ item.check_attempts }}/{{ item.max_check_attempts }}
+                    </td>
+                    <td class="{{ item.check_result.state|icinga_status_css_class }} ws-break">
+                        {{ item.check_result.output }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <br class="clear">
+        <p class="success">All monitored services up</p>
+    {% endif %}
 
     <p>Last update: {{ current_time }}</p>
 {% endblock %}
