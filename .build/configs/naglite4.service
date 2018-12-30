@@ -3,13 +3,13 @@ Description=naglite4 webserver
 After=syslog.target
 
 [Service]
-WorkingDirectory=/apps/naglite4
+WorkingDirectory=/opt/naglite4
 User=naglite4
 Group=naglite4
-ExecStart=/apps/naglite4/.venv/bin/gunicorn -b 127.0.0.1:4080 main:app
+ExecStart=/opt/naglite4/.venv/bin/gunicorn -b 127.0.0.1:4080 main:app
 # use optional environment files
-EnvironmentFile=-/apps/naglite4/environment
-EnvironmentFile=-/apps/naglite4/.env
+EnvironmentFile=-/opt/naglite4/environment
+EnvironmentFile=-/opt/naglite4/.env
 Restart=always
 KillSignal=SIGQUIT
 Type=simple
