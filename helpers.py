@@ -16,7 +16,7 @@ class StatePriority(Enum):
 
 
 class StateCssClass(Enum):
-    OK = 'has-background-success'
-    WARNING = 'has-background-warning'
-    CRITICAL = 'has-background-danger'
-    UNKNOWN = 'has-background-grey-light'
+    OK = 'state-ok'
+    WARNING = 'state-warning'
+    CRITICAL = 'state-critical'
+    UNKNOWN = 'state-unknown'

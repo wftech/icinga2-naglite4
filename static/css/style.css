@@ -1,7 +1,113 @@
-.has-background-danger {
-    background: hsl(348, 100%, 71%) !important;
+html, body {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
 }
 
-td.omitted {
-    background-color: white;
+body {
+    font-family: Verdana, Tahoma, Helvetica, Arial, sans-serif;
+    background-color: #000000;
+    font-size: 14px;
+    text-align: center;
+}
+
+table {
+    width: 100%;
+    border: none;
+    border-spacing: 2px;
+    white-space: nowrap;
+}
+
+th, td {
+    padding: 2px 10px;
+}
+
+th, td.info {
+    background-color: #d3d3d3;
+}
+
+h1 {
+    text-align: center;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+h2 {
+    text-align: left;
+    font-weight: bold;
+    padding-bottom: 5px;
+    font-size: 1.2em;
+    color: #ffffff;
+    float: left;
+}
+
+.content {
+    margin: 5px;
+}
+
+table.stats {
+    width: auto;
+    float: right;
+    margin-top: 10px;
+}
+
+td.ws-break {
+    white-space: normal;
+}
+
+p {
+    color: #ffffff;
+}
+
+p.success {
+    text-transform: uppercase;
+    background: #9BBB59;
+    padding: 5px 0;
+}
+
+th, td {
+    font-weight: bold;
+    border-radius: 4px;
+    border: solid 2px #4a4a4a;
+}
+
+.state-up {
+    background-color: #9BBB59;
+}
+
+.state-warning {
+    background-color: #F79646;
+}
+
+.state-critical {
+    background-color: #FF4D50;
+}
+
+.state-unknown {
+    background-color: #FF5AC2;
+}
+
+.info-ok {
+    background-color: #9BBB59;
+}
+
+.info-acknowledged {
+    background-color: #F79646;
+}
+
+.info-down {
+    background-color: #FF4D50;
+}
+
+.info-critical {
+    background-color: #FF4D50;
+}
+
+.info-unreachable {
+    background-color: #d3d3d3;
+}
+
+.info-downtime {
+    background-color: #d3d3d3;
 }
