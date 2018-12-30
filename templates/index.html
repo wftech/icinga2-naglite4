@@ -19,7 +19,7 @@
 
     <h2>Hosts</h2>
 
-    <table class="stats">
+    <table class="counts">
         <tr>
             {{ hostcount("ok", "Up" ) }}
             {{ hostcount("down", "Down", "info-down" ) }}
@@ -29,7 +29,7 @@
         </tr>
     </table>
 
-    <table>
+    <table class="state">
         <thead>
         <tr>
             <th>Host</th>
@@ -70,7 +70,7 @@
 
     <h2>Problem services</h2>
 
-    <table class="stats">
+    <table class="counts">
         <tr>
             {{ svccount("ok", "OK" ) }}
             {{ svccount("critical", "Critical", "info-critical" ) }}
@@ -80,7 +80,7 @@
         </tr>
     </table>
 
-    <table>
+    <table class="state">
         <thead>
         <tr>
             <th>Host</th>
@@ -99,7 +99,7 @@
                         {{ item.host_name }}
                     </td>
                 {% else %}
-                    <td class="info"></td>
+                    <td class="info-empty"></td>
                 {% endif %}
                 <td class="{{ item.check_result.state|icinga_status_css_class }}">
                     {{ item.service_name }}

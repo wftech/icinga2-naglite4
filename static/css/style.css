@@ -46,7 +46,7 @@ h2 {
     margin: 5px;
 }
 
-table.stats {
+table.counts {
     width: auto;
     float: right;
     margin-top: 10px;
@@ -66,10 +66,16 @@ p.success {
     padding: 5px 0;
 }
 
-th, td {
+table.state th, table.state td {
     font-weight: bold;
     border-radius: 4px;
-    border: solid 2px #4a4a4a;
+    border: solid 1px #000000;
+}
+
+table.counts td {
+    font-weight: bold;
+    border-radius: 4px;
+    border: solid 2px #444444;
 }
 
 .state-up {
