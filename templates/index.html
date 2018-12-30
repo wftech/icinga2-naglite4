@@ -21,11 +21,11 @@
 
     <table class="stats">
         <tr>
-            {{ svccount("ok", "OK" ) }}
-            {{ svccount("critical", "Critical", "info-critical" ) }}
-            {{ svccount("downtime", "Scheduled Down", "info-downtime" ) }}
-            {{ svccount("acknowledged", "Acknowledged", "info-acknowledged" ) }}
-            {{ svccount("unreachable", "Unreachable", "info-unreachable" ) }}
+            {{ hostcount("ok", "Up" ) }}
+            {{ hostcount("down", "Down", "info-down" ) }}
+            {{ hostcount("downtime", "Scheduled Down", "info-downtime" ) }}
+            {{ hostcount("acknowledged", "Acknowledged", "info-acknowledged" ) }}
+            {{ hostcount("unreachable", "Unreachable", "info-unreachable" ) }}
         </tr>
     </table>
 
@@ -72,11 +72,11 @@
 
     <table class="stats">
         <tr>
-            {{ hostcount("ok", "Up" ) }}
-            {{ hostcount("down", "Down", "info-down" ) }}
-            {{ hostcount("downtime", "Scheduled Down", "info-downtime" ) }}
-            {{ hostcount("acknowledged", "Acknowledged", "info-acknowledged" ) }}
-            {{ hostcount("unreachable", "Unreachable", "info-unreachable" ) }}
+            {{ svccount("ok", "OK" ) }}
+            {{ svccount("critical", "Critical", "info-critical" ) }}
+            {{ svccount("downtime", "Scheduled Down", "info-downtime" ) }}
+            {{ svccount("acknowledged", "Acknowledged", "info-acknowledged" ) }}
+            {{ svccount("unreachable", "Unreachable", "info-unreachable" ) }}
         </tr>
     </table>
 
