@@ -131,23 +131,33 @@ class MonitoringStatus:
     def all_hosts(self):
         return self._hosts().values()
 
-    def problem_hosts(self, acknowledged=None):
+    def problem_hosts(self, acknowledged=None, unhandled=None):
         for obj in self._hosts().values():
             if int(obj['state']) == State.OK.value:
                 continue
             if acknowledged is not None:
                 if int(obj['acknowledgement']) != int(acknowledged):
                     continue
+            if unhandled:
+                if int(obj['acknowledgement']):
+                    continue
+                if int(obj['downtime_depth']):
+                    continue
             yield obj
 
-    @property
-    def problem_services(self, acknowledged=None):
+    def problem_services(self, acknowledged=None, unhandled=None):
         for obj in self._services().values():
             if int(obj['state']) == State.OK.value:
                 continue
             if acknowledged is not None:
                 if int(obj['acknowledgement']) != int(acknowledged):
                     continue
+            if unhandled:
+                if int(obj['acknowledgement']):
+                    continue
+                if int(obj['downtime_depth']):
+                    continue
+
             yield obj
 
 

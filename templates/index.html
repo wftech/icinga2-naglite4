@@ -50,7 +50,7 @@
             </tr>
             </thead>
             <tbody>
-            {% for item in monitoring.problem_hosts(acknowledged=0) %}
+            {% for item in monitoring.problem_hosts(unhandled=1) %}
                 <tr>
                     <td class="info">
                         {{ item.host_name }}
@@ -107,7 +107,7 @@
             </tr>
             </thead>
             <tbody>
-            {% for item in monitoring.problem_services %}
+            {% for item in monitoring.problem_services(unhandled=1) %}
                 <tr>
                     {% if loop.changed(item.host_name) %}
                         <td class="info">
