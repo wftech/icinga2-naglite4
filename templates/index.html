@@ -17,6 +17,14 @@
         {% endif %}
     {% endmacro %}
 
+    {% macro check_attempts(item) %}
+        {% if item.is_soft_state %}
+            {{ item.check_attempts }}/{{ item.max_check_attempts }} (soft)
+        {% else %}
+            {{ item.max_check_attempts }}
+        {% endif %}
+    {% endmacro %}
+
     <h2>Hosts</h2>
 
     <table class="counts">
@@ -57,10 +65,10 @@
                         {{ item.duration|humanize() }}
                     </td>
                     <td class="{{ item.check_result.state|icinga_status_css_class }}">
-                        {{ item.check_attempts }}/{{ item.max_check_attempts }}
+                        {{ check_attempts(item) }} %}
                     </td>
                     <td class="{{ item.check_result.state|icinga_status_css_class }} ws-break">
-                        {{ item.check_result.output }}
+                        {{ item.check_output }}
                     </td>
                 </tr>
             {% endfor %}
@@ -118,10 +126,10 @@
                         {{ item.duration|humanize() }}
                     </td>
                     <td class="{{ item.check_result.state|icinga_status_css_class }}">
-                        {{ item.check_attempts }}/{{ item.max_check_attempts }}
+                        {{ check_attempts(item) }}
                     </td>
                     <td class="{{ item.check_result.state|icinga_status_css_class }} ws-break">
-                        {{ item.check_result.output }}
+                        {{ item.check_output }}
                     </td>
                 </tr>
             {% endfor %}
@@ -129,7 +137,7 @@
         </table>
     {% else %}
         <br class="clear">
-        <p class="success">All monitored services up</p>
+        <p class="bigSuccess">All monitored services up</p>
     {% endif %}
 
     <p>Last update: {{ current_time }}</p>

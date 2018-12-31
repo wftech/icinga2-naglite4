@@ -85,10 +85,12 @@ class MonitoringStatus:
             service = Service(obj)
             host = service.host_name
             if host not in nested_services.keys():
-                nested_services[host] = dict(items=[], state_priority=StatePriority.OK.value)
+                nested_services[host] = dict(items=[],
+                                             state_priority=StatePriority.OK.value)
             nested_services[host]['items'].append(service)
-            nested_services[host]['state_priority'] = min(nested_services[host]['state_priority'],
-                                                          service.state_priority)
+            nested_services[host]['state_priority'] = min(
+                nested_services[host]['state_priority'],
+                service.state_priority)
 
             if obj['attrs']['downtime_depth']:
                 services_counts['downtime'] += 1
@@ -103,16 +105,17 @@ class MonitoringStatus:
             elif obj['attrs']['state'] == State.UNKNOWN.value:
                 services_counts['unknown'] += 1
 
-
             if int(obj['attrs']['state']) != State.OK.value:
                 self.problem_services_count += 1
 
         nested_services = OrderedDict(
-            sorted(nested_services.items(), key=lambda item: item[1]['state_priority']))
+            sorted(nested_services.items(),
+                   key=lambda item: item[1]['state_priority']))
 
         services = {}
         for _, host_services in nested_services.items():
-            for s in sorted(host_services['items'], key=lambda item: item.state_priority):
+            for s in sorted(host_services['items'],
+                            key=lambda item: item.state_priority):
                 services[s.service_key] = s
 
         self._services_cache = OrderedDict(services.items())
@@ -166,13 +169,17 @@ class Status:
     def check_attempts(self):
         return int(self['check_attempt'])
 
+    # Shortcut for people which prefer singular version
+    check_attempt = check_attempts
+
+
     @property
     def max_check_attempts(self):
         return int(self['max_check_attempts'])
 
     @property
     def is_soft_state(self):
-        return self['check_attempts'] != self['max_check_attempts']
+        return self['last_state_type'] == 0
 
     @property
     def duration(self):
@@ -185,7 +192,18 @@ class Status:
     def state_priority(self):
         return getattr(StatePriority, State(int(self['state'])).name).value
 
+    @property
+    def check_output_long(self):
+        "Get full check command output"
+        return self._data['attrs']['last_check_result']['output']
+
+    @property
+    def check_output(self):
+        "Return short check command output"
+        return self._data['attrs']['last_check_result']['output'].split('\n')[0]
+
     def __getitem__(self, item):
+        assert item != 'output'
         return self._data['attrs'][item]
 
 
