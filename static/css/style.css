@@ -72,6 +72,17 @@ p.success {
     margin: 0;
 }
 
+p.bigSuccess {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 150%;
+    background: #9BBB59;
+    padding: 5px 0;
+    margin: 0;
+    border-radius: 4px;
+}
+
+
 table.state th, table.state td {
     font-weight: bold;
     border-radius: 4px;
