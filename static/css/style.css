@@ -115,7 +115,7 @@ table.counts td {
     background-color: #9BBB59;
 }
 
-.info-acknowledged {
+.info-warning {
     background-color: #F79646;
 }
 
@@ -127,10 +127,14 @@ table.counts td {
     background-color: #FF4D50;
 }
 
-.info-unreachable {
+.info-unreachable, .info-acknowledged {
     background-color: #d3d3d3;
 }
 
 .info-downtime {
     background-color: #d3d3d3;
+}
+
+.info-unknown {
+    background-color: #FF5AC2;
 }
