@@ -19,9 +19,9 @@
 
     {% macro check_attempts(item) %}
         {% if item.is_soft_state %}
-            {{ item.check_attempts }}/{{ item.max_check_attempts }} (soft)
+            {{ item.check_attempts }}/{{ item.max_check_attempts }}
         {% else %}
-            {{ item.max_check_attempts }}
+            {{ item.max_check_attempts }} &times;
         {% endif %}
     {% endmacro %}
 
@@ -65,7 +65,7 @@
                         {{ item.duration|humanize() }}
                     </td>
                     <td class="{{ item.check_result.state|icinga_status_css_class }}">
-                        {{ check_attempts(item) }} %}
+                        {{ check_attempts(item) }}
                     </td>
                     <td class="{{ item.check_result.state|icinga_status_css_class }} ws-break">
                         {{ item.check_output }}

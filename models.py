@@ -1,5 +1,6 @@
 import datetime
 from collections import OrderedDict, Counter
+from pprint import pprint
 
 from helpers import State, StatePriority
 
@@ -28,7 +29,7 @@ class MonitoringStatus:
         host_counts = self._host_counts
         hosts = {}
         attrs = ['state', 'downtime_depth', 'acknowledgement',
-                 'last_reachable', 'last_state_type', 'last_state_change',
+                 'last_reachable', 'state_type', 'last_state_change',
                  'last_check_result',
                  'check_attempt', 'max_check_attempts',
                  'address', 'name', '__name']
@@ -43,7 +44,7 @@ class MonitoringStatus:
                 host_counts['acknowledged'] += 1
             elif not obj['attrs']['last_reachable']:
                 host_counts['unreachable'] += 1
-            elif obj['attrs']['last_state_type'] != 0:
+            elif obj['attrs']['state_type'] != 0:
                 host_counts['down'] += 1
 
             if int(obj['attrs']['state']) != State.OK.value:
@@ -73,7 +74,7 @@ class MonitoringStatus:
         services_counts['ok'] = len(valid_services)
 
         attrs = ['state', 'downtime_depth', 'acknowledgement',
-                 'last_reachable', 'last_state_type', 'last_state_change',
+                 'last_reachable', 'state_type', 'last_state_change',
                  'last_check_result',
                  'check_attempt', 'max_check_attempts',
                  'name', 'host_name', '__name']
@@ -189,7 +190,7 @@ class Status:
 
     @property
     def is_soft_state(self):
-        return self['last_state_type'] == 0
+        return self['state_type'] == 0
 
     @property
     def duration(self):
