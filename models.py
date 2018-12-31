@@ -96,8 +96,13 @@ class MonitoringStatus:
                 services_counts['acknowledged'] += 1
             elif not obj['attrs']['last_reachable']:
                 services_counts['unreachable'] += 1
-            elif obj['attrs']['last_state_type'] != 0:
+            elif obj['attrs']['state'] == State.WARNING.value:
+                services_counts['warning'] += 1
+            elif obj['attrs']['state'] == State.CRITICAL.value:
                 services_counts['critical'] += 1
+            elif obj['attrs']['state'] == State.UNKNOWN.value:
+                services_counts['unknown'] += 1
+
 
             if int(obj['attrs']['state']) != State.OK.value:
                 self.problem_services_count += 1

@@ -79,9 +79,10 @@
         <tr>
             {{ svccount("ok", "OK" ) }}
             {{ svccount("critical", "Critical", "info-critical" ) }}
-            {{ svccount("downtime", "Scheduled Down", "info-downtime" ) }}
+            {{ svccount("warning", "Warning", "info-downtime" ) }}
             {{ svccount("acknowledged", "Acknowledged", "info-acknowledged" ) }}
-            {{ svccount("unreachable", "Unreachable", "info-unreachable" ) }}
+            {{ svccount("downtime", "Scheduled Down", "info-downtime" ) }}
+            {{ svccount("unknown", "Unknown", "info-unreachable" ) }}
         </tr>
     </table>
 
