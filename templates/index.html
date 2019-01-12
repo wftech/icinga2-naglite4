@@ -52,10 +52,10 @@
             <tbody>
             {% for item in monitoring.problem_hosts(unhandled=1) %}
                 <tr>
-                    <td class="info">
+                    <td>
                         {{ item.host_name }}
                     </td>
-                    <td class="info">
+                    <td>
                         {{ item.host_address }}
                     </td>
                     <td class="{{ item.check_result.state|icinga_status_css_class }}">
@@ -91,19 +91,19 @@
                 <tbody>
                 {% for item in monitoring.problem_hosts(acknowledged=1) %}
                     <tr>
-                        <td class="info">
+                        <td>
                             {{ item.host_name }}
                         </td>
-                        <td class="info">
+                        <td>
                             {{ item.host_address }}
                         </td>
-                        <td class="info">
+                        <td>
                             {{ item.check_result.state|icinga_status }}
                         </td>
-                        <td class="info">
+                        <td>
                             {{ item.duration|humanize() }}
                         </td>
-                        <td class="info">
+                        <td>
                             {{ check_attempts(item) }}
                         </td>
                         <td class="info ws-break">
@@ -131,19 +131,19 @@
                 <tbody>
                 {% for item in monitoring.problem_hosts(downtime=1) %}
                     <tr>
-                        <td class="info">
+                        <td>
                             {{ item.host_name }}
                         </td>
-                        <td class="info">
+                        <td>
                             {{ item.host_address }}
                         </td>
-                        <td class="info">
+                        <td>
                             {{ item.check_result.state|icinga_status }}
                         </td>
-                        <td class="info">
+                        <td>
                             {{ item.duration|humanize() }}
                         </td>
-                        <td class="info">
+                        <td>
                             {{ check_attempts(item) }}
                         </td>
                         <td class="info ws-break">
@@ -156,7 +156,7 @@
         {% endif %}
     {% else %}
         <br class="clear">
-        <p class="bigSuccess">All monitored hosts up</p>
+        <p class="big-success">All monitored hosts up</p>
     {% endif %}
 
     <h2>Problem services</h2>
@@ -188,11 +188,11 @@
             {% for item in monitoring.problem_services(unhandled=1) %}
                 <tr>
                     {% if loop.changed(item.host_name) %}
-                        <td class="info">
+                        <td>
                             {{ item.host_name }}
                         </td>
                     {% else %}
-                        <td class="info-empty"></td>
+                        <td class="empty"></td>
                     {% endif %}
                     <td class="{{ item.check_result.state|icinga_status_css_class }}">
                         {{ item.service_name }}
@@ -217,36 +217,36 @@
         {% if monitoring.service_count('acknowledged') %}
             <h3>Acknowledged</h3>
             <table class="state">
-            <thead>
-            <tr>
-                <th>Host</th>
-                <th>Service</th>
-                <th>Status</th>
-                <th>Duration</th>
-                <th>Attempts</th>
-                <th>Plugin output</th>
-            </tr>
-            </thead>
+                <thead>
+                <tr>
+                    <th>Host</th>
+                    <th>Service</th>
+                    <th>Status</th>
+                    <th>Duration</th>
+                    <th>Attempts</th>
+                    <th>Plugin output</th>
+                </tr>
+                </thead>
                 <tbody>
                 {% for item in monitoring.problem_services(acknowledged=1) %}
                     <tr>
                         {% if loop.changed(item.host_name) %}
-                        <td class="info">
+                        <td>
                             {{ item.host_name }}
                         </td>
                         {% else %}
-                            <td class="info-empty"></td>
+                            <td class="empty"></td>
                         {% endif %}
-                        <td class="info">
+                        <td>
                             {{ item.service_name }}
                         </td>
-                        <td class="info">
+                        <td>
                             {{ item.check_result.state|icinga_status }}
                         </td>
-                        <td class="info">
+                        <td>
                             {{ item.duration|humanize() }}
                         </td>
-                        <td class="info">
+                        <td>
                             {{ check_attempts(item) }}
                         </td>
                         <td class="info ws-break">
@@ -261,36 +261,36 @@
         {% if monitoring.service_count('downtime') %}
             <h3>Scheduled Down</h3>
             <table class="state">
-            <thead>
-            <tr>
-                <th>Host</th>
-                <th>Service</th>
-                <th>Status</th>
-                <th>Duration</th>
-                <th>Attempts</th>
-                <th>Plugin output</th>
-            </tr>
-            </thead>
+                <thead>
+                <tr>
+                    <th>Host</th>
+                    <th>Service</th>
+                    <th>Status</th>
+                    <th>Duration</th>
+                    <th>Attempts</th>
+                    <th>Plugin output</th>
+                </tr>
+                </thead>
                 <tbody>
                 {% for item in monitoring.problem_services(downtime=1) %}
                     <tr>
                         {% if loop.changed(item.host_name) %}
-                        <td class="info">
+                        <td>
                             {{ item.host_name }}
                         </td>
                         {% else %}
-                            <td class="info-empty"></td>
+                            <td class="empty"></td>
                         {% endif %}
-                        <td class="info">
+                        <td>
                             {{ item.service_name }}
                         </td>
-                        <td class="info">
+                        <td>
                             {{ item.check_result.state|icinga_status }}
                         </td>
-                        <td class="info">
+                        <td>
                             {{ item.duration|humanize() }}
                         </td>
-                        <td class="info">
+                        <td>
                             {{ check_attempts(item) }}
                         </td>
                         <td class="info ws-break">
@@ -303,7 +303,7 @@
         {% endif %}
     {% else %}
         <br class="clear">
-        <p class="bigSuccess">All monitored services up</p>
+        <p class="big-success">All monitored services up</p>
     {% endif %}
 
     <p>Last update: {{ current_time }}</p>

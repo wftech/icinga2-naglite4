@@ -21,10 +21,11 @@ table {
 
 th, td {
     padding: 2px 10px;
+    background-color: #d3d3d3;
 }
 
-th, td.info {
-    background-color: #d3d3d3;
+td.empty {
+    background-color: #000000;
 }
 
 h1 {
@@ -72,15 +73,7 @@ p {
     clear: both;
 }
 
-p.success {
-    text-transform: uppercase;
-    font-weight: bold;
-    background: #9BBB59;
-    padding: 5px 0;
-    margin: 0;
-}
-
-p.bigSuccess {
+p.big-success {
     text-transform: uppercase;
     font-weight: bold;
     font-size: 150%;
