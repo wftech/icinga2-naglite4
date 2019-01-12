@@ -132,7 +132,7 @@ class MonitoringStatus:
     def all_hosts(self):
         return self._hosts().values()
 
-    def problem_hosts(self, acknowledged=None, unhandled=None):
+    def problem_hosts(self, acknowledged=None, unhandled=None, downtime=None):
         for obj in self._hosts().values():
             if int(obj['state']) == State.OK.value:
                 continue
@@ -144,9 +144,12 @@ class MonitoringStatus:
                     continue
                 if int(obj['downtime_depth']):
                     continue
+            if downtime:
+                if int(obj['downtime_depth']) == 0:
+                    continue
             yield obj
 
-    def problem_services(self, acknowledged=None, unhandled=None):
+    def problem_services(self, acknowledged=None, unhandled=None, downtime=None):
         for obj in self._services().values():
             if int(obj['state']) == State.OK.value:
                 continue
@@ -158,7 +161,9 @@ class MonitoringStatus:
                     continue
                 if int(obj['downtime_depth']):
                     continue
-
+            if downtime:
+                if int(obj['downtime_depth']) == 0:
+                    continue
             yield obj
 
 

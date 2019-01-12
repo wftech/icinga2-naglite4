@@ -74,12 +74,90 @@
             {% endfor %}
             </tbody>
         </table>
+
+        {% if monitoring.host_count('acknowledged') %}
+            <h3>Acknowledged</h3>
+            <table class="state">
+                <thead>
+                <tr>
+                    <th>Host</th>
+                    <th>IP Address</th>
+                    <th>Status</th>
+                    <th>Duration</th>
+                    <th>Attempts</th>
+                    <th>Plugin output</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in monitoring.problem_hosts(acknowledged=1) %}
+                    <tr>
+                        <td class="info">
+                            {{ item.host_name }}
+                        </td>
+                        <td class="info">
+                            {{ item.host_address }}
+                        </td>
+                        <td class="info">
+                            {{ item.check_result.state|icinga_status }}
+                        </td>
+                        <td class="info">
+                            {{ item.duration|humanize() }}
+                        </td>
+                        <td class="info">
+                            {{ check_attempts(item) }}
+                        </td>
+                        <td class="info ws-break">
+                            {{ item.check_output }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+        {% if monitoring.host_count('downtime') %}
+            <h3>Scheduled Down</h3>
+            <table class="state">
+                <thead>
+                <tr>
+                    <th>Host</th>
+                    <th>IP Address</th>
+                    <th>Status</th>
+                    <th>Duration</th>
+                    <th>Attempts</th>
+                    <th>Plugin output</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in monitoring.problem_hosts(downtime=1) %}
+                    <tr>
+                        <td class="info">
+                            {{ item.host_name }}
+                        </td>
+                        <td class="info">
+                            {{ item.host_address }}
+                        </td>
+                        <td class="info">
+                            {{ item.check_result.state|icinga_status }}
+                        </td>
+                        <td class="info">
+                            {{ item.duration|humanize() }}
+                        </td>
+                        <td class="info">
+                            {{ check_attempts(item) }}
+                        </td>
+                        <td class="info ws-break">
+                            {{ item.check_output }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
     {% else %}
         <br class="clear">
         <p class="bigSuccess">All monitored hosts up</p>
     {% endif %}
-
-    {# TODO: show short list acknowledged hosts here #}
 
     <h2>Problem services</h2>
 
@@ -135,6 +213,94 @@
             {% endfor %}
             </tbody>
         </table>
+
+        {% if monitoring.service_count('acknowledged') %}
+            <h3>Acknowledged</h3>
+            <table class="state">
+            <thead>
+            <tr>
+                <th>Host</th>
+                <th>Service</th>
+                <th>Status</th>
+                <th>Duration</th>
+                <th>Attempts</th>
+                <th>Plugin output</th>
+            </tr>
+            </thead>
+                <tbody>
+                {% for item in monitoring.problem_services(acknowledged=1) %}
+                    <tr>
+                        {% if loop.changed(item.host_name) %}
+                        <td class="info">
+                            {{ item.host_name }}
+                        </td>
+                        {% else %}
+                            <td class="info-empty"></td>
+                        {% endif %}
+                        <td class="info">
+                            {{ item.service_name }}
+                        </td>
+                        <td class="info">
+                            {{ item.check_result.state|icinga_status }}
+                        </td>
+                        <td class="info">
+                            {{ item.duration|humanize() }}
+                        </td>
+                        <td class="info">
+                            {{ check_attempts(item) }}
+                        </td>
+                        <td class="info ws-break">
+                            {{ item.check_output }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+        {% if monitoring.service_count('downtime') %}
+            <h3>Scheduled Down</h3>
+            <table class="state">
+            <thead>
+            <tr>
+                <th>Host</th>
+                <th>Service</th>
+                <th>Status</th>
+                <th>Duration</th>
+                <th>Attempts</th>
+                <th>Plugin output</th>
+            </tr>
+            </thead>
+                <tbody>
+                {% for item in monitoring.problem_services(downtime=1) %}
+                    <tr>
+                        {% if loop.changed(item.host_name) %}
+                        <td class="info">
+                            {{ item.host_name }}
+                        </td>
+                        {% else %}
+                            <td class="info-empty"></td>
+                        {% endif %}
+                        <td class="info">
+                            {{ item.service_name }}
+                        </td>
+                        <td class="info">
+                            {{ item.check_result.state|icinga_status }}
+                        </td>
+                        <td class="info">
+                            {{ item.duration|humanize() }}
+                        </td>
+                        <td class="info">
+                            {{ check_attempts(item) }}
+                        </td>
+                        <td class="info ws-break">
+                            {{ item.check_output }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
     {% else %}
         <br class="clear">
         <p class="bigSuccess">All monitored services up</p>
