@@ -1,6 +1,5 @@
 import datetime
 from collections import OrderedDict, Counter
-from pprint import pprint
 
 from helpers import State, StatePriority
 
@@ -82,7 +81,6 @@ class MonitoringStatus:
                 'Service',
                 filters='service.state!=ServiceOK',
                 attrs=attrs):
-            k = obj['attrs']['__name']
             service = Service(obj)
             host = service.host_name
             if host not in nested_services.keys():

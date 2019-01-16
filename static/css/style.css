@@ -42,14 +42,6 @@ h2 {
     float: left;
 }
 
-h3 {
-    text-align: left;
-    font-weight: bold;
-    padding-bottom: 2px;
-    font-size: 1.1em;
-    color: #ffffff;
-}
-
 .content {
     margin: 5px;
 }
@@ -79,7 +71,6 @@ p.big-success {
     border: solid 1px #000000;;
 }
 
-
 table.state th, table.state td {
     font-weight: bold;
     border-radius: 4px;
@@ -97,7 +88,6 @@ table.state-acknowledged td, table.state-downtime td {
     border-radius: 4px;
     border: solid 1px #000000;
     background-color: #FF5AC2;
-
 }
 
 table.counts td {
