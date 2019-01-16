@@ -67,7 +67,7 @@
                     <td class="{{ item.check_result.state|icinga_status_css_class }}">
                         {{ check_attempts(item) }}
                     </td>
-                    <td class="{{ item.check_result.state|icinga_status_css_class }} ws-break">
+                    <td class="{{ item.check_result.state|icinga_status_css_class }} plugin-output">
                         {{ item.check_output }}
                     </td>
                 </tr>
@@ -150,7 +150,7 @@
                     <td class="{{ item.check_result.state|icinga_status_css_class }}">
                         {{ check_attempts(item) }}
                     </td>
-                    <td class="{{ item.check_result.state|icinga_status_css_class }} ws-break">
+                    <td class="{{ item.check_result.state|icinga_status_css_class }} plugin-output">
                         {{ item.check_output }}
                     </td>
                 </tr>

@@ -60,10 +60,6 @@ table.counts {
     margin-top: 10px;
 }
 
-td.ws-break {
-    white-space: normal;
-}
-
 p {
     color: #ffffff;
 }
@@ -89,6 +85,11 @@ table.state th, table.state td {
     border: solid 1px #000000;
     text-align: center;
     white-space: nowrap;
+}
+
+table.state td.plugin-output {
+    text-align: left;
+    white-space: normal;
 }
 
 table.state-acknowledged td, table.state-downtime td {
