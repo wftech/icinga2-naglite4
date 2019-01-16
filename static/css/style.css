@@ -94,6 +94,7 @@ table.state th, table.state td {
 table.state-acknowledged td, table.state-downtime td {
     border-radius: 4px;
     border: solid 1px #000000;
+    background-color: #FF5AC2;
 
 }
 
