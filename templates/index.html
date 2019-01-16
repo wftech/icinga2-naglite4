@@ -37,7 +37,7 @@
         </tr>
     </table>
 
-    {% if monitoring.problem_hosts_count > 0 %}
+    {% if monitoring.host_count('unhandled') %}
         <table class="state">
             <thead>
             <tr>
@@ -74,33 +74,33 @@
             {% endfor %}
             </tbody>
         </table>
-
-        {% if monitoring.host_count('acknowledged') %}
-            <table class="state-acknowledged">
-                <tr>
-                    <td class="acknowledged-list"><b>Acknowledged:</b>
-                        {% for item in monitoring.problem_hosts(acknowledged=1) %}
-                            {{ item.host_name }}{% if not loop.last %},{% endif %}
-                        {% endfor %}
-                    </td>
-                </tr>
-            </table>
-        {% endif %}
-
-        {% if monitoring.host_count('downtime') %}
-            <table class="state-downtime">
-                <tr>
-                    <td class="downtime-list"><b>In scheduled downtime:</b>
-                        {% for item in monitoring.problem_hosts(downtime=1) %}
-                            {{ item.host_name }}{% if not loop.last %},{% endif %}
-                        {% endfor %}
-                    </td>
-                </tr>
-            </table>
-        {% endif %}
     {% else %}
         <br class="clear">
         <p class="big-success">All monitored hosts up</p>
+    {% endif %}
+
+    {% if monitoring.host_count('acknowledged') %}
+        <table class="state-acknowledged">
+            <tr>
+                <td class="acknowledged-list"><b>Acknowledged:</b>
+                    {% for item in monitoring.problem_hosts(acknowledged=1) %}
+                        {{ item.host_name }}{% if not loop.last %},{% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+        </table>
+    {% endif %}
+
+    {% if monitoring.host_count('downtime') %}
+        <table class="state-downtime">
+            <tr>
+                <td class="downtime-list"><b>In scheduled downtime:</b>
+                    {% for item in monitoring.problem_hosts(downtime=1) %}
+                        {{ item.host_name }}{% if not loop.last %},{% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+        </table>
     {% endif %}
 
     <h2>Problem services</h2>
@@ -116,7 +116,7 @@
         </tr>
     </table>
 
-    {% if monitoring.problem_services_count > 0 %}
+    {% if monitoring.service_count('unhandled') %}
         <table class="state">
             <thead>
             <tr>
@@ -157,22 +157,21 @@
             {% endfor %}
             </tbody>
         </table>
-
-        {% if monitoring.service_count('downtime') %}
-            <table class="state-downtime">
-                <tr>
-                    <td class="downtime-list"><b>In scheduled downtime:</b>
-                        {% for item in monitoring.problem_services(downtime=1) %}
-                            {{  item.service_name }}@{{ item.host_name }}{% if not loop.last %},{% endif %}
-                        {% endfor %}
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        {% endif %}
     {% else %}
         <br class="clear">
         <p class="big-success">All monitored services up</p>
+    {% endif %}
+
+    {% if monitoring.service_count('downtime') %}
+        <table class="state-downtime">
+            <tr>
+                <td class="downtime-list"><b>In scheduled downtime:</b>
+                    {% for item in monitoring.problem_services(downtime=1) %}
+                        {{  item.service_name }}@{{ item.host_name }}{% if not loop.last %},{% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+        </table>
     {% endif %}
 
     <p>Last update: {{ current_time }}</p>
