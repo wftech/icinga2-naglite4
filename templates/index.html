@@ -76,81 +76,27 @@
         </table>
 
         {% if monitoring.host_count('acknowledged') %}
-            <h3>Acknowledged</h3>
-            <table class="state">
-                <thead>
+            <table class="state-acknowledged">
                 <tr>
-                    <th>Host</th>
-                    <th>IP Address</th>
-                    <th>Status</th>
-                    <th>Duration</th>
-                    <th>Attempts</th>
-                    <th>Plugin output</th>
+                    <td class="acknowledged-list"><b>Acknowledged:</b>
+                        {% for item in monitoring.problem_hosts(acknowledged=1) %}
+                            {{ item.host_name }}{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    </td>
                 </tr>
-                </thead>
-                <tbody>
-                {% for item in monitoring.problem_hosts(acknowledged=1) %}
-                    <tr>
-                        <td>
-                            {{ item.host_name }}
-                        </td>
-                        <td>
-                            {{ item.host_address }}
-                        </td>
-                        <td>
-                            {{ item.check_result.state|icinga_status }}
-                        </td>
-                        <td>
-                            {{ item.duration|humanize() }}
-                        </td>
-                        <td>
-                            {{ check_attempts(item) }}
-                        </td>
-                        <td class="info ws-break">
-                            {{ item.check_output }}
-                        </td>
-                    </tr>
-                {% endfor %}
                 </tbody>
             </table>
         {% endif %}
 
         {% if monitoring.host_count('downtime') %}
-            <h3>Scheduled Down</h3>
-            <table class="state">
-                <thead>
+            <table class="state-downtime">
                 <tr>
-                    <th>Host</th>
-                    <th>IP Address</th>
-                    <th>Status</th>
-                    <th>Duration</th>
-                    <th>Attempts</th>
-                    <th>Plugin output</th>
+                    <td class="downtime-list"><b>In scheduled downtime:</b>
+                        {% for item in monitoring.problem_hosts(downtime=1) %}
+                            {{ item.host_name }}{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    </td>
                 </tr>
-                </thead>
-                <tbody>
-                {% for item in monitoring.problem_hosts(downtime=1) %}
-                    <tr>
-                        <td>
-                            {{ item.host_name }}
-                        </td>
-                        <td>
-                            {{ item.host_address }}
-                        </td>
-                        <td>
-                            {{ item.check_result.state|icinga_status }}
-                        </td>
-                        <td>
-                            {{ item.duration|humanize() }}
-                        </td>
-                        <td>
-                            {{ check_attempts(item) }}
-                        </td>
-                        <td class="info ws-break">
-                            {{ item.check_output }}
-                        </td>
-                    </tr>
-                {% endfor %}
                 </tbody>
             </table>
         {% endif %}

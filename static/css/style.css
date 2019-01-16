@@ -9,7 +9,7 @@ body {
     font-family: Verdana, Tahoma, Helvetica, Arial, sans-serif;
     background-color: #000000;
     font-size: 14px;
-    text-align: center;
+    text-align: left;
 }
 
 table {
@@ -86,6 +86,12 @@ p.big-success {
 
 table.state th, table.state td {
     font-weight: bold;
+    border-radius: 4px;
+    border: solid 1px #000000;
+    text-align: center;
+}
+
+table.state-acknowledged td {
     border-radius: 4px;
     border: solid 1px #000000;
 }
