@@ -16,7 +16,6 @@ table {
     width: 100%;
     border: none;
     border-spacing: 2px;
-    white-space: nowrap;
 }
 
 th, td {
@@ -89,11 +88,13 @@ table.state th, table.state td {
     border-radius: 4px;
     border: solid 1px #000000;
     text-align: center;
+    white-space: nowrap;
 }
 
-table.state-acknowledged td {
+table.state-acknowledged td, table.state-downtime td {
     border-radius: 4px;
     border: solid 1px #000000;
+
 }
 
 table.counts td {

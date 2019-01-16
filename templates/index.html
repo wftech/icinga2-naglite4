@@ -84,7 +84,6 @@
                         {% endfor %}
                     </td>
                 </tr>
-                </tbody>
             </table>
         {% endif %}
 
@@ -97,7 +96,6 @@
                         {% endfor %}
                     </td>
                 </tr>
-                </tbody>
             </table>
         {% endif %}
     {% else %}
@@ -160,90 +158,15 @@
             </tbody>
         </table>
 
-        {% if monitoring.service_count('acknowledged') %}
-            <h3>Acknowledged</h3>
-            <table class="state">
-                <thead>
-                <tr>
-                    <th>Host</th>
-                    <th>Service</th>
-                    <th>Status</th>
-                    <th>Duration</th>
-                    <th>Attempts</th>
-                    <th>Plugin output</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for item in monitoring.problem_services(acknowledged=1) %}
-                    <tr>
-                        {% if loop.changed(item.host_name) %}
-                        <td>
-                            {{ item.host_name }}
-                        </td>
-                        {% else %}
-                            <td class="empty"></td>
-                        {% endif %}
-                        <td>
-                            {{ item.service_name }}
-                        </td>
-                        <td>
-                            {{ item.check_result.state|icinga_status }}
-                        </td>
-                        <td>
-                            {{ item.duration|humanize() }}
-                        </td>
-                        <td>
-                            {{ check_attempts(item) }}
-                        </td>
-                        <td class="info ws-break">
-                            {{ item.check_output }}
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        {% endif %}
-
         {% if monitoring.service_count('downtime') %}
-            <h3>Scheduled Down</h3>
-            <table class="state">
-                <thead>
+            <table class="state-downtime">
                 <tr>
-                    <th>Host</th>
-                    <th>Service</th>
-                    <th>Status</th>
-                    <th>Duration</th>
-                    <th>Attempts</th>
-                    <th>Plugin output</th>
+                    <td class="downtime-list"><b>In scheduled downtime:</b>
+                        {% for item in monitoring.problem_services(downtime=1) %}
+                            {{  item.service_name }}@{{ item.host_name }}{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    </td>
                 </tr>
-                </thead>
-                <tbody>
-                {% for item in monitoring.problem_services(downtime=1) %}
-                    <tr>
-                        {% if loop.changed(item.host_name) %}
-                        <td>
-                            {{ item.host_name }}
-                        </td>
-                        {% else %}
-                            <td class="empty"></td>
-                        {% endif %}
-                        <td>
-                            {{ item.service_name }}
-                        </td>
-                        <td>
-                            {{ item.check_result.state|icinga_status }}
-                        </td>
-                        <td>
-                            {{ item.duration|humanize() }}
-                        </td>
-                        <td>
-                            {{ check_attempts(item) }}
-                        </td>
-                        <td class="info ws-break">
-                            {{ item.check_output }}
-                        </td>
-                    </tr>
-                {% endfor %}
                 </tbody>
             </table>
         {% endif %}
