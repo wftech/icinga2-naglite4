@@ -20,17 +20,21 @@ REFRESH = os.getenv('REFRESH', 15)
 
 
 @app.template_filter('icinga_status')
-def status_filter(value):
+def status_filter(check_result):
+    if check_result is None:
+        return 'N/A'
     try:
-        return State(int(value)).name
+        return State(int(check_result['state'])).name
     except ValueError:
         return 'N/A'
 
 
 @app.template_filter('icinga_status_css_class')
-def status_css_class_filter(value):
+def status_css_class_filter(check_result):
+    if check_result is None:
+        return ''
     try:
-        return getattr(StateCssClass, State(int(value)).name).value
+        return getattr(StateCssClass, State(int(check_result['state'])).name).value
     except ValueError:
         return ''
 

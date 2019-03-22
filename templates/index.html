@@ -58,16 +58,16 @@
                     <td>
                         {{ item.host_address }}
                     </td>
-                    <td class="{{ item.check_result.state|icinga_status_css_class }}">
-                        {{ item.check_result.state|icinga_status }}
+                    <td class="{{ item.check_result|icinga_status_css_class }}">
+                        {{ item.check_result|icinga_status }}
                     </td>
-                    <td class="{{ item.check_result.state|icinga_status_css_class }}">
+                    <td class="{{ item.check_result|icinga_status_css_class }}">
                         {{ item.duration|humanize() }}
                     </td>
-                    <td class="{{ item.check_result.state|icinga_status_css_class }}">
+                    <td class="{{ item.check_result|icinga_status_css_class }}">
                         {{ check_attempts(item) }}
                     </td>
-                    <td class="{{ item.check_result.state|icinga_status_css_class }} plugin-output">
+                    <td class="{{ item.check_result|icinga_status_css_class }} plugin-output">
                         {{ item.check_output }}
                     </td>
                 </tr>
@@ -138,19 +138,19 @@
                     {% else %}
                         <td class="empty"></td>
                     {% endif %}
-                    <td class="{{ item.check_result.state|icinga_status_css_class }}">
+                    <td class="{{ item.check_result|icinga_status_css_class }}">
                         {{ item.service_name }}
                     </td>
-                    <td class="{{ item.check_result.state|icinga_status_css_class }}">
-                        {{ item.check_result.state|icinga_status }}
+                    <td class="{{ item.check_result|icinga_status_css_class }}">
+                        {{ item.check_result|icinga_status }}
                     </td>
-                    <td class="{{ item.check_result.state|icinga_status_css_class }}">
+                    <td class="{{ item.check_result|icinga_status_css_class }}">
                         {{ item.duration|humanize() }}
                     </td>
-                    <td class="{{ item.check_result.state|icinga_status_css_class }}">
+                    <td class="{{ item.check_result|icinga_status_css_class }}">
                         {{ check_attempts(item) }}
                     </td>
-                    <td class="{{ item.check_result.state|icinga_status_css_class }} plugin-output">
+                    <td class="{{ item.check_result|icinga_status_css_class }} plugin-output">
                         {{ item.check_output }}
                     </td>
                 </tr>

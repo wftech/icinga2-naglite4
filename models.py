@@ -211,11 +211,15 @@ class Status:
     @property
     def check_output_long(self):
         "Get full check command output"
+        if not self._data['attrs']['last_check_result']:
+            return 'Pending'
         return self._data['attrs']['last_check_result']['output']
 
     @property
     def check_output(self):
         "Return short check command output"
+        if not self._data['attrs']['last_check_result']:
+            return 'Pending'
         return self._data['attrs']['last_check_result']['output'].split('\n')[0]
 
     def __getitem__(self, item):
